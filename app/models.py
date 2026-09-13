@@ -1,8 +1,9 @@
+from datetime import datetime
 from pydantic import BaseModel
 from typing import Literal
 
 class SecurityEvent(BaseModel):
-    timestamp: str
+    timestamp: datetime
     source_ip: str
     username: str
     event_type: str
