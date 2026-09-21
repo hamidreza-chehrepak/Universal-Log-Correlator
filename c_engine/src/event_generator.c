@@ -2,10 +2,11 @@
 
 int main(void)
 {
-    printf("SIMULATED_SECURITY_EVENT\n");
-    printf("event_type=PROCESS_EXECUTION\n");
-    printf("status=SIMULATED\n");
-    printf("severity=medium\n");
+    printf("{\"event_type\":\"LOGIN_FAILURE\",\"status\":\"SIMULATED\",\"severity\":\"low\"}\n");
+    printf("{\"event_type\":\"LOGIN_FAILURE\",\"status\":\"SIMULATED\",\"severity\":\"low\"}\n");
+    printf("{\"event_type\":\"LOGIN_FAILURE\",\"status\":\"SIMULATED\",\"severity\":\"low\"}\n");
+    printf("{\"event_type\":\"LOGIN_FAILURE\",\"status\":\"SIMULATED\",\"severity\":\"low\"}\n");
+    printf("{\"event_type\":\"LOGIN_FAILURE\",\"status\":\"SIMULATED\",\"severity\":\"low\"}\n");
 
     return 0;
 }
