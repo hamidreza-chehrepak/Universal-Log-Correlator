@@ -1,11 +1,12 @@
 #include <stdio.h>
-#include <string.h>
+#include <sqlite3.h>
 
 int main(void)
 {
-    char password[50];
+    sqlite3 *db;
+    sqlite3_stmt *statement;
 
-    const char correct_password[] = "cyber123";
+    int result;
 
     printf("====================================\n");
     printf("       UNIVERSAL CYBER RANGE\n");
@@ -13,25 +14,58 @@ int main(void)
     printf("====================================\n\n");
 
     printf("TARGET: Secure Database\n");
-    printf("STATUS: Protected\n\n");
+    printf("STATUS: ONLINE\n\n");
 
-    printf("MISSION OBJECTIVE:\n");
-    printf("Gain access to the test database.\n\n");
+    result = sqlite3_open("database/target.db", &db);
 
-    printf("Enter password: ");
-    scanf("%49s", password);
-
-    if (strcmp(password, correct_password) == 0)
+    if (result != SQLITE_OK)
     {
-        printf("\nACCESS GRANTED!\n");
-        printf("Mission completed.\n");
-        printf("Level 2 unlocked.\n");
+        printf("DATABASE CONNECTION FAILED\n");
+        return 1;
     }
-    else
+
+    printf("DATABASE CONNECTION: SUCCESS\n\n");
+
+    result = sqlite3_prepare_v2(
+        db,
+        "SELECT username, role, access_level FROM users;",
+        -1,
+        &statement,
+        NULL
+    );
+
+    if (result != SQLITE_OK)
     {
-        printf("\nACCESS DENIED!\n");
-        printf("Mission failed.\n");
+        printf("DATABASE QUERY FAILED\n");
+        sqlite3_close(db);
+        return 1;
     }
+
+    printf("DATABASE RECORDS:\n\n");
+
+    while (sqlite3_step(statement) == SQLITE_ROW)
+    {
+        const unsigned char *username =
+            sqlite3_column_text(statement, 0);
+
+        const unsigned char *role =
+            sqlite3_column_text(statement, 1);
+
+        int access_level =
+            sqlite3_column_int(statement, 2);
+
+        printf(
+            "User: %s | Role: %s | Access Level: %d\n",
+            username,
+            role,
+            access_level
+        );
+    }
+
+    sqlite3_finalize(statement);
+    sqlite3_close(db);
+
+    printf("\nDATABASE CLOSED.\n");
 
     return 0;
 }
